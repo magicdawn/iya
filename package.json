@@ -1,0 +1,24 @@
+{
+  "name": "iya",
+  "version": "0.0.1",
+  "description": "iya",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "test-cover": "istanbul cover _mocha -- -u exports"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4",
+    "express-modern": "^0.3.0",
+    "webpack": "^1.13.1"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.9",
+    "eslint": "^2.10.1",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5",
+    "should": "^8.3.1"
+  }
+}
