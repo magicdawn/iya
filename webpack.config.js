@@ -1,17 +1,28 @@
 'use strict';
 
-module.exports = {
-  entry: {
-    lib: __dirname + '/app/js/lib.js',
-    main: __dirname + '/app/js/main.js'
-  },
-  output: {
-    path: __dirname + '/public/js',
-    filename: '[name].js'
-  },
+/**
+ * module dependencies
+ */
+
+const _ = require('lodash');
+
+/**
+ * exports
+ */
+
+const configs = module.exports = [];
+
+/**
+ * utils
+ */
+
+const make = o => _.assign(_.cloneDeep(base), o);
+
+const base = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.json']
   },
+  devtool: 'inline-source-map',
   module: {
     loaders: [
       {
@@ -30,6 +41,43 @@ module.exports = {
   }
 };
 
+/**
+ * lib
+ */
+
+const lib = make({
+  entry: __dirname + '/app/js/lib.js',
+  output: {
+    path: __dirname + '/public/js',
+    filename: 'lib.bundle.js'
+  }
+});
+
+configs.push(lib);
+
+
+/**
+ * app.js
+ */
+
+const app = make({
+  entry: __dirname + '/app/js/app.js',
+  output: {
+    path: __dirname + '/public/js',
+    filename: 'app.bundle.js'
+  },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM',
+    'jquery': 'jQuery',
+    'superagent': 'superagent'
+  }
+});
+
+configs.push(app);
+
 if (process.env.NODE_ENV === 'production') {
-  module.exports.output.filename = '[name].[chunkhash].js';
+  configs.forEach(c => {
+    c.output.filename = c.output.filename.replace(/\.js$/, '.[hash].js');
+  });
 }

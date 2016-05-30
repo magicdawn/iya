@@ -1,2 +1,0 @@
-export { X } from './app'
-

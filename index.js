@@ -4,6 +4,8 @@ const express = require('express');
 const modern = require('express-modern');
 const app = express();
 
+app.use(express.static(__dirname + '/public'));
+
 app.get('/', modern(function*(req, res) {
   res.send('hello world');
 }));
