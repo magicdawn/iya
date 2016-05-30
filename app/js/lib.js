@@ -1,3 +1,6 @@
 'use strict';
 
-global.$ = global.jQuery = require('jquery');
+import jQuery from 'jquery'
+import 'babel-polyfill'
+
+global.jQuery = global.$ = jQuery

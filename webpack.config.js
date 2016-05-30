@@ -8,6 +8,25 @@ module.exports = {
   output: {
     path: __dirname + '/public/js',
     filename: '[name].js'
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json']
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel',
+        query: {
+          presets: ['es2015', 'react'],
+          plugins: [
+            'syntax-async-functions',
+            'transform-regenerator'
+          ]
+        }
+      }
+    ]
   }
 };
 
