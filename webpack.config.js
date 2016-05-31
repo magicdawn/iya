@@ -4,7 +4,13 @@
  * module dependencies
  */
 
+const fs = require('fs');
+const inspect = require('util').inspect;
+const path = require('path');
+
 const _ = require('lodash');
+const webpack = require('webpack');
+const argv = require('minimist')(process.argv.slice(2));
 
 /**
  * exports
@@ -27,7 +33,7 @@ const base = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'babel',
         query: {
           presets: ['es2015', 'react'],
@@ -38,8 +44,26 @@ const base = {
         }
       }
     ]
-  }
+  },
+
+  plugins: [
+    function() {
+      this.plugin('done', function(stats) {
+        const opt = stats.compilation.options;
+        const rel = path.relative(opt.context + '/app', opt.entry);
+        STATS[rel] = rel.replace(/\.js$/, '.' + stats.hash + '.js');
+        writeStats();
+      });
+    }
+  ]
 };
+
+let i = 0;
+
+const STATS = {};
+const writeStats = _.debounce(function() {
+  fs.writeFileSync(__dirname + '/public/js/stats.json', JSON.stringify(STATS, null, '  '), 'utf8');
+}, 1 * 1000);
 
 /**
  * lib
@@ -49,12 +73,11 @@ const lib = make({
   entry: __dirname + '/app/js/lib.js',
   output: {
     path: __dirname + '/public/js',
-    filename: 'lib.bundle.js'
+    filename: 'lib.js'
   }
 });
 
 configs.push(lib);
-
 
 /**
  * app.js
@@ -64,7 +87,7 @@ const app = make({
   entry: __dirname + '/app/js/app.js',
   output: {
     path: __dirname + '/public/js',
-    filename: 'app.bundle.js'
+    filename: 'app.js'
   },
   externals: {
     'react': 'React',
@@ -76,8 +99,22 @@ const app = make({
 
 configs.push(app);
 
-if (process.env.NODE_ENV === 'production') {
-  configs.forEach(c => {
+/**
+ * production 配置
+ */
+
+if (process.env.NODE_ENV === 'production' || argv.production) {
+  for (let c of configs) {
+
+    // hash form cache
     c.output.filename = c.output.filename.replace(/\.js$/, '.[hash].js');
-  });
+
+    // compress
+    delete c.devtool;
+    c.plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }));
+  }
 }
