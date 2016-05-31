@@ -13,6 +13,13 @@ const webpack = require('webpack');
 const argv = require('minimist')(process.argv.slice(2));
 
 /**
+ * env
+ */
+
+if(argv.production) process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+/**
  * exports
  */
 
@@ -54,7 +61,12 @@ const base = {
         STATS[rel] = rel.replace(/\.js$/, '.' + stats.hash + '.js');
         writeStats();
       });
-    }
+    },
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+      }
+    })
   ]
 };
 
@@ -103,7 +115,7 @@ configs.push(app);
  * production 配置
  */
 
-if (process.env.NODE_ENV === 'production' || argv.production) {
+if (process.env.NODE_ENV === 'production') {
   for (let c of configs) {
 
     // hash form cache
