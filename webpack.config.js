@@ -4,13 +4,24 @@
  * module dependencies
  */
 
-const fs = require('fs');
+const pify = require('promise.ify');
+const fs = pify.all(require('fs-extra'));
 const inspect = require('util').inspect;
 const path = require('path');
-
 const _ = require('lodash');
 const webpack = require('webpack');
 const argv = require('minimist')(process.argv.slice(2));
+
+
+/**
+ * clean
+ */
+
+if(argv.clean) {
+  fs.removeSync(__dirname + '/public/js');
+  console.log('clean: done');
+  process.exit(0);
+}
 
 /**
  * env
@@ -65,7 +76,9 @@ const base = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-      }
+      },
+      TWO: '1 + 1',
+      SOME_BOOLEAN: true
     })
   ]
 };
