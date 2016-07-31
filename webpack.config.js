@@ -17,7 +17,7 @@ const argv = require('minimist')(process.argv.slice(2));
  * clean
  */
 
-if(argv.clean) {
+if (argv.clean) {
   fs.removeSync(__dirname + '/public/js');
   console.log('clean: done');
   process.exit(0);
@@ -27,7 +27,7 @@ if(argv.clean) {
  * env
  */
 
-if(argv.production) process.env.NODE_ENV = 'production';
+if (argv.production) process.env.NODE_ENV = 'production';
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 /**
@@ -48,27 +48,28 @@ const base = {
   },
   devtool: 'inline-source-map',
   module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015', 'react'],
-          plugins: [
-            'syntax-async-functions',
-            'transform-regenerator'
-          ]
-        }
+    loaders: [{
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      loader: 'babel',
+      query: {
+        presets: ['es2015', 'react'],
+        plugins: [
+          'syntax-async-functions',
+          'transform-regenerator'
+        ]
       }
-    ]
+    }]
   },
 
   plugins: [
     function() {
       this.plugin('done', function(stats) {
         const opt = stats.compilation.options;
-        const rel = path.relative(opt.context + '/app', opt.entry);
+        const arr = Array.isArray(opt.entry) ? opt.entry : [opt.entry];
+        const entry = arr.pop();
+        if (!entry) return;
+        const rel = path.relative(opt.context + '/app', entry);
         STATS[rel] = rel.replace(/\.js$/, '.' + stats.hash + '.js');
         writeStats();
       });
@@ -87,7 +88,11 @@ let i = 0;
 
 const STATS = {};
 const writeStats = _.debounce(function() {
-  fs.writeFileSync(__dirname + '/public/js/stats.json', JSON.stringify(STATS, null, '  '), 'utf8');
+  try {
+    fs.writeFileSync(__dirname + '/public/js/stats.json', JSON.stringify(STATS, null, '  '), 'utf8');
+  } catch (e) {
+    console.error(e.stack);
+  }
 }, 1 * 1000);
 
 /**

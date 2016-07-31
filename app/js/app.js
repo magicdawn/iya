@@ -13,3 +13,7 @@ console.log(TWO)
 if(SOME_BOOLEAN) {
   console.log(SOME_BOOLEAN)
 }
+
+if(process.env.NODE_ENV !== 'production') {
+  alert('hello world');
+}
