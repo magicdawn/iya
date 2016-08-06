@@ -30,6 +30,7 @@ rules:
   # disable default
   no-unused-vars: 0 # 已定义, 未使用
   no-console: 0 # console
+  comma-dangle: 0
 
   # space
   # 有 jsbeautify 保持风格
