@@ -34,6 +34,7 @@ if (argv.clean) {
 
 if (argv.production) process.env.NODE_ENV = 'production';
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+const prod = process.env.NODE_ENV === 'production';
 
 /**
  * exports
@@ -56,17 +57,17 @@ const config = module.exports = {
   },
   output: {
     path: __dirname + '/static',
-    filename: '[name].js'
+    filename: '[name].js',
+    pathinfo: !prod,
   },
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['', '.js', '.jsx', '.json']
   },
-  devtool: 'inline-source-map',
   module: {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      // loader: 'babel-loader',
       loaders: [
         'react-hot',
         'babel-loader'

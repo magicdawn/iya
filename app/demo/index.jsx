@@ -1,15 +1,15 @@
-import { Component } from 'react'
+import React from 'react' // 必须使用 React
 import request from 'superagent'
 
-export class X extends Component {
+const { Component } = React
+
+export default class X extends Component {
   constructor() {
     super()
   }
 
-  getDefaultProps() {
-    return {
-      name: ''
-    }
+  static getDefaultProps() {
+    return {name: 'foo'}
   }
 
   async pong() {
@@ -22,7 +22,10 @@ export class X extends Component {
 
   render() {
     return (
-      <div>{ this.props.name }</div>
+      <div>
+        your name: <br />
+        {this.props.name}
+      </div>
     )
   }
 }

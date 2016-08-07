@@ -4,6 +4,10 @@ parserOptions:
   ecmaVersion: 6
   sourceType: module
 
+# code env
+env:
+  browser: true
+
 # rules
 rules:
   semi: [2, never]
