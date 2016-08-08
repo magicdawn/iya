@@ -8,8 +8,8 @@ export default class X extends Component {
     super()
   }
 
-  static getDefaultProps() {
-    return {name: 'foo'}
+  static defaultProps = {
+    name: 'foo'
   }
 
   async pong() {
@@ -22,8 +22,8 @@ export default class X extends Component {
 
   render() {
     return (
-      <div>
-        your name: <br />
+      <div style={{color: 'purple' }}>
+        hello your name is : <br />
         {this.props.name}
       </div>
     )

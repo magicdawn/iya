@@ -2,6 +2,8 @@
   "presets": ["es2015", "react"],
   "plugins": [
     "syntax-async-functions",
-    "transform-regenerator"
+    "transform-regenerator",
+    "syntax-class-properties",
+    "transform-class-properties"
   ]
 }
