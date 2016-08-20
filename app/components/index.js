@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash'
 
 const { Component } = React
 
-class X extends Component {
+class App extends Component {
   constructor() {
     super()
   }
@@ -23,12 +23,28 @@ class X extends Component {
   }
 
   render() {
+    const { dispatch, show } = this.props
+
     return (
       <div style={{color: 'purple' }}>
         hello your name is : <br />
         {this.props.name}
+
+        <br />
+        state.show={ show }
+        <button onClick={ e => this.handleToggle(e) }>
+          toggle
+        </button>
       </div>
     )
+  }
+
+  handleToggle(e){
+    const { dispatch, show } = this.props
+    console.log('dispatching')
+    dispatch({
+      type: 'TOGGLE_SHOW'
+    })
   }
 }
 
@@ -36,4 +52,4 @@ const mapStateToProps = state => {
   return cloneDeep(state)
 }
 
-export default connect(mapStateToProps)(X)
+export default connect(mapStateToProps)(App)
