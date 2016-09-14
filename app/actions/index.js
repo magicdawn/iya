@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { x, y } from 'utils'
+import { format as fmt } from 'util'
 
 const TOGGLE_SHOW = 'TOGGLE_SHOW'
 
@@ -14,5 +14,3 @@ const show = (state = 'show', action) => {
 export default combineReducers({
   show
 })
-
-import { format as fmt } from 'utils'

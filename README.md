@@ -6,7 +6,7 @@
 ### development
 - [x] 多页面, 公用库
 - [x] 开发 inline-source-map
-- [ ] hot reload
+- [x] hot reload, `webpack-dev-server --hot --progress`
 
 ### production
 - [x] 生产 webpack production Build

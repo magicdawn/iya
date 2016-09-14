@@ -10,6 +10,12 @@ const inspect = require('util').inspect;
 const path = require('path');
 const _ = require('lodash');
 const webpack = require('webpack');
+const HtmlPlugin = require('html-webpack-plugin');
+
+/**
+ * argv
+ */
+
 const argv = require('minimist')(process.argv.slice(2), {
   alias: {
     c: 'clean',
@@ -60,7 +66,7 @@ const config = module.exports = {
     filename: '[name].js',
     pathinfo: !prod,
   },
-  devtool: 'inline-source-map',
+  devtool: 'eval',
   resolve: {
     extensions: ['', '.js', '.jsx', '.json']
   },
@@ -81,12 +87,15 @@ const config = module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       }
-    })
+    }),
+    new HtmlPlugin({
+      template: __dirname + '/app/index.html',
+    }),
   ],
-
   devServer: {
     contentBase: './static',
-    hot: true
+    inline: true, // 添加 entry
+    hot: true, // 添加 hmr plugin
   }
 };
 
