@@ -3,3 +3,7 @@ node_modules
 coverage
 .DS_Store
 public
+
+# editor
+.idea
+.vscode
