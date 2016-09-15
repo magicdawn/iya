@@ -7,11 +7,7 @@ import actions from './actions'
 import App from './components'
 
 console.log(process.env.NODE_ENV)
-if (process.env.NODE_ENV !== 'production') {
-  console.log('not in production')
-}
 
-// console.log(redux)
 const store = createStore(actions)
 
 render(
