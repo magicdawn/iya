@@ -116,17 +116,3 @@ if (process.env.NODE_ENV === 'production') {
     }
   }));
 }
-
-/*
-function() {
-  this.plugin('done', function(stats) {
-    const opt = stats.compilation.options;
-    const arr = Array.isArray(opt.entry) ? opt.entry : [opt.entry];
-    const entry = arr.pop();
-    if (!entry) return;
-    // const rel = path.relative(opt.context + '/app', entry);
-    // STATS[rel] = rel.replace(/\.js$/, '.' + stats.hash + '.js');
-    // writeStats();
-  });
-},
- */

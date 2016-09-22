@@ -3,12 +3,16 @@ import { render } from 'react-dom'
 import { createStore } from 'redux'
 import { Provider, connect } from 'react-redux'
 import { browserHistory } from 'react-router'
-import actions from './actions'
+import reducers from './reducers'
 import App from './components'
 
-console.log(process.env.NODE_ENV)
+const prod = process.env.NODE_ENV === 'production'
 
-const store = createStore(actions)
+console.log(process.env.NODE_ENV)
+const store = createStore(
+  reducers,
+  prod ? undefined : window.devToolsExtension && window.devToolsExtension()
+)
 
 render(
   <Provider store={store}>
