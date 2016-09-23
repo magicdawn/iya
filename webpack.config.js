@@ -66,7 +66,7 @@ const config = module.exports = {
     filename: '[name].js',
     pathinfo: !prod,
   },
-  devtool: 'eval',
+  devtool: 'eval-source-map', // -source-map
   resolve: {
     extensions: ['', '.js', '.jsx', '.json']
   },

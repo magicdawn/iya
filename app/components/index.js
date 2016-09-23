@@ -1,11 +1,23 @@
+/**
+ * Module dependencies
+ */
+
 import React from 'react' // 必须使用 React
 import request from 'superagent'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import { cloneDeep } from 'lodash'
+import { bindActionCreators } from 'redux'
+import * as actions from '../actions'
 
-const { Component } = React
+/**
+ * components
+ */
 
-class App extends Component {
+import AddTodo from '../components/AddTodo'
+import TodoList from '../components/TodoList'
+
+class App extends React.Component {
   constructor() {
     super()
   }
@@ -14,37 +26,14 @@ class App extends Component {
     name: 'foo'
   }
 
-  async pong() {
-    return request.get('http://baidu.com')
-  }
-
-  async ping() {
-    await this.pong()
-  }
-
   render() {
-    const { dispatch, show } = this.props
-
+    console.log(this.props)
     return (
       <div style={{color: 'purple' }}>
-        hello your name is : <br />
-        {this.props.name}
-
-        <br />
-        state.show={ show }
-        <button onClick={ e => this.handleToggle(e) }>
-          toggle
-        </button>
+        <AddTodo handleAddTodo={ this.props.addTodo } />
+        <TodoList todos={ this.props.todos } />
       </div>
     )
-  }
-
-  handleToggle(e){
-    const { dispatch, show } = this.props
-    console.log('dispatching')
-    dispatch({
-      type: 'TOGGLE_SHOW'
-    })
   }
 }
 
@@ -52,4 +41,14 @@ const mapStateToProps = state => {
   return cloneDeep(state)
 }
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = dispatch => {
+  const ret = bindActionCreators({
+    addTodo: actions.addTodo,
+  }, dispatch)
+
+  ret.dispatch = dispatch
+
+  return ret
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

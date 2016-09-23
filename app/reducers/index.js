@@ -1,16 +1,27 @@
 import { combineReducers } from 'redux'
 import { format as fmt } from 'util'
+import _ from 'lodash'
+import * as actions from '../actions'
 
-const TOGGLE_SHOW = 'TOGGLE_SHOW'
+const todos = (state = [], action) => {
+  const types = [
+    actions.ADD_TODO,
+    action.COMPLETE_TODO,
+  ]
+  if(!_.includes(types, action.type)) return state
 
-const show = (state = 'show', action) => {
-  if (action.type !== TOGGLE_SHOW) return state
-
-  console.log('old = %s', state)
-  if (state === 'show') return 'hide'
-  else return 'show'
+  if(action.type === actions.ADD_TODO) {
+    return [
+      ...state,
+      {
+        text: action.text,
+        completed: false,
+      }
+    ]
+  }
 }
 
+
 export default combineReducers({
-  show
+  todos
 })
