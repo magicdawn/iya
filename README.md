@@ -1,4 +1,6 @@
 # iya
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/magicdawn/iya.svg)](https://greenkeeper.io/)
 > iya = 哎呀. wenpack demo
 
 ## 特性
